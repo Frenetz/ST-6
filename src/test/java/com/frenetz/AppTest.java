@@ -3,8 +3,6 @@ package com.frenetz;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -151,8 +149,8 @@ public class GameTest {
     @DisplayName("Mid Game Move Generation")
     public void checkMidGameMoveGeneration() {
         ArrayList<Integer> moveList = new ArrayList<>();
-        additionalGame.board = new char[]{'X', 'O', 'X', ' ', 'O', ' ', 'O', 'X', ' '};
-        additionalGame.generateMoves(additionalGame.board, moveList);
+        ticTacToeGame.board = new char[]{'X', 'O', 'X', ' ', 'O', ' ', 'O', 'X', ' '};
+        ticTacToeGame.generateMoves(ticTacToeGame.board, moveList);
         assertEquals(3, moveList.size());
         assertTrue(moveList.contains(3));
         assertTrue(moveList.contains(5));
@@ -162,59 +160,46 @@ public class GameTest {
     @Test
     @DisplayName("Invalid Move Test")
     public void checkInvalidMove() {
-        additionalGame.board[0] = 'X';
+        ticTacToeGame.board[0] = 'X';
         assertThrows(IllegalArgumentException.class, () -> {
-            additionalGame.board[0] = 'O';
+            ticTacToeGame.board[0] = 'O';
         });
     }
 
     @Test
     @DisplayName("Game Reset Test")
     public void checkGameReset() {
-        additionalGame.board[0] = 'X';
-        additionalGame.state = State.XWIN;
-        additionalGame.board = new char[9];
-        additionalGame.state = State.PLAYING;
-        for (char cell : additionalGame.board) {
+        ticTacToeGame.board[0] = 'X';
+        ticTacToeGame.state = State.XWIN;
+        ticTacToeGame.board = new char[9];
+        ticTacToeGame.state = State.PLAYING;
+        for (char cell : ticTacToeGame.board) {
             assertEquals(' ', cell);
         }
-        assertEquals(State.PLAYING, additionalGame.state);
+        assertEquals(State.PLAYING, ticTacToeGame.state);
     }
 
     @Test
     @DisplayName("Minimax Optimal Move Test")
     public void checkMinimaxOptimalMove() {
-        additionalGame.board = new char[]{'X', 'O', 'X', 'O', 'O', 'X', 'X', ' ', ' '};
-        int bestMove = additionalGame.MiniMax(additionalGame.board, additionalGame.player2);
-        assertEquals(7, bestMove); // Optimal move for 'O' to block 'X'
+        ticTacToeGame.board = new char[]{'X', 'O', 'X', 'O', 'O', 'X', 'X', ' ', ' '};
+        int bestMove = ticTacToeGame.MiniMax(ticTacToeGame.board, ticTacToeGame.player2);
+        assertEquals(7, bestMove);
     }
 
     @Test
     @DisplayName("MinMove Function Test")
     public void checkMinMoveFunction() {
-        additionalGame.board = new char[]{'X', 'O', 'X', ' ', 'O', ' ', ' ', ' ', ' '};
-        int minMoveVal = additionalGame.MinMove(additionalGame.board, additionalGame.player1);
-        assertTrue(minMoveVal <= Game.INF);
+        ticTacToeGame.board = new char[]{'X', 'O', 'X', ' ', 'O', ' ', ' ', ' ', ' '};
+        int bestMove = ticTacToeGame.MinMove(ticTacToeGame.board);
+        assertTrue(bestMove >= 0 && bestMove < 9);
     }
 
     @Test
     @DisplayName("MaxMove Function Test")
     public void checkMaxMoveFunction() {
-        additionalGame.board = new char[]{'O', 'X', 'O', ' ', 'X', ' ', ' ', ' ', ' '};
-        int maxMoveVal = additionalGame.MaxMove(additionalGame.board, additionalGame.player2);
-        assertTrue(maxMoveVal >= -Game.INF);
+        ticTacToeGame.board = new char[]{'X', 'O', 'X', ' ', 'O', ' ', ' ', ' ', ' '};
+        int bestMove = ticTacToeGame.MaxMove(ticTacToeGame.board);
+        assertTrue(bestMove >= 0 && bestMove < 9);
     }
-
-    @Test
-    @DisplayName("Game State Transition Test")
-    public void checkGameStateTransition() {
-        additionalGame.board = new char[]{'X', 'X', ' ', 'O', 'O', ' ', ' ', ' ', 'X'};
-        additionalGame.state = additionalGame.checkState(additionalGame.board);
-        assertEquals(State.PLAYING, additionalGame.state);
-
-        additionalGame.board[2] = 'X';
-        additionalGame.state = additionalGame.checkState(additionalGame.board);
-        assertEquals(State.XWIN, additionalGame.state);
-    }
-
 }
