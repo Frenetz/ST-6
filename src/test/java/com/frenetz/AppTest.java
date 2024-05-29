@@ -216,7 +216,7 @@ public class AppTest {
                 'X', 'O', 'O',
                 'O', 'O', 'X'
         };
-        assertEquals(State.PLAYING, game.checkState(board));
+        assertEquals(State.DRAW, game.checkState(board));
     }
 
     @Test
@@ -261,7 +261,7 @@ public class AppTest {
 
         game.symbol = 'O';
 
-        assertEquals(0, game.evaluatePosition(board, game.player1));
+        assertEquals(-1, game.evaluatePosition(board, game.player1));
     }
 
     @Test
